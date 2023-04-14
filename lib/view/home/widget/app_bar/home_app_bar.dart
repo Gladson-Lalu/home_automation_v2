@@ -67,7 +67,7 @@ class HomeAppBar extends StatelessWidget {
                   Get.offAllNamed('/homeSelection');
                 },
                 child: Icon(
-                  Icons.logout,
+                  Icons.home,
                   size: 30,
                   // ignore: deprecated_member_use
                   color: Theme.of(context).textTheme.labelMedium!.color,

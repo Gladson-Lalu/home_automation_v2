@@ -103,7 +103,7 @@ class CreateHomeCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(

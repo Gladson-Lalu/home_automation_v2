@@ -99,7 +99,8 @@ class BluetoothSerialService {
 
   void writeData(String data) {
     if (_connection != null && _connection!.isConnected) {
-      _connection!.output.add(Uint8List.fromList(utf8.encode(data)));
-    }
+
+      _connection!.output.add(utf8.encoder.convert(data));
+          }
   }
 }

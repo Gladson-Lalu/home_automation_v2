@@ -104,14 +104,18 @@ class BluetoothScreenController extends GetxController {
   }
 
   void sendCredentials() {
-    _getStorage.write('wifiSSID', wifiSSIDController.text);
-    _getStorage.write('wifiPassword', wifiPasswordController.text);
-    final String home =
-        Get.find<DeviceManager>().selectedHome.value!.name.value;
-    final email = Get.find<AppController>().currentUser!.email;
-    final password = Get.find<AppController>().currentUser!.password;
-    final String message =
-        'room:${roomNameController.text}||home:$home||email:$email||password:$password||ssid:${wifiSSIDController.text};wifiPWD:${wifiPasswordController.text}';
-    _bluetoothSerialService.writeData(message);
+    try {
+      _getStorage.write('wifiSSID', wifiSSIDController.text);
+      _getStorage.write('wifiPassword', wifiPasswordController.text);
+      final String home =
+          Get.find<DeviceManager>().selectedHome.value!.name.value;
+      final email = Get.find<AppController>().currentUser!.email;
+      final password = Get.find<AppController>().currentUser!.password;
+      final String message =
+          "emailS${email}emailE:passS${password}passE:homeS${home}homeE:roomS${roomNameController.text}roomE:wifiS${wifiSSIDController.text}wifiE:wPassS${wifiPasswordController.text}wPassE";
+      _bluetoothSerialService.writeData(message);
+    } catch (e) {
+      AppToast.show('Error: ${e.toString()}');
+    }
   }
 }
