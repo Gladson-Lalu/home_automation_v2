@@ -2,12 +2,10 @@ import 'package:get/get.dart';
 import 'electronic_device.dart';
 
 class RoomModel {
-  final int id;
-  final RxString name;
+  final String name;
   final RxList<ElectronicDevice> devices;
 
   RoomModel({
-    required this.id,
     required this.name,
     required this.devices,
   });
@@ -15,8 +13,7 @@ class RoomModel {
   //toJson
   toJson() {
     return {
-      'id': id,
-      'name': name.value,
+      'name': name,
       'devices': devices.map((device) => device.toJson()).toList(),
     };
   }

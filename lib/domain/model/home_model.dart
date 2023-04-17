@@ -3,12 +3,10 @@ import 'package:get/get.dart';
 import 'room_model.dart';
 
 class HomeModel {
-  final int id;
-  final RxString name;
+  final String name;
   final RxList<RoomModel> rooms;
 
   HomeModel({
-    required this.id,
     required this.name,
     required this.rooms,
   });
@@ -20,8 +18,7 @@ class HomeModel {
   //toJson
   toJson() {
     return {
-      'id': id,
-      'name': name.value,
+      'name': name,
       'rooms': rooms.map((room) => room.toJson()).toList(),
     };
   }

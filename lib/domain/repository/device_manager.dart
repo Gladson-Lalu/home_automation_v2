@@ -1,12 +1,20 @@
+import 'dart:convert';
+import 'dart:ffi';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:home_automation/domain/model/electronic_device.dart';
+import 'package:home_automation/domain/model/user_model.dart';
+import 'package:home_automation/domain/provider/auth_provider.dart';
 import '../model/room_model.dart';
 
 import '../../app/app_toast.dart';
-import '../model/electronic_device.dart';
 import '../model/home_model.dart';
 
 class DeviceManager extends GetxService {
+  final FirebaseDatabase _database = FirebaseDatabase.instance;
+  DatabaseReference? _databaseReference;
   final RxList<HomeModel> _homes = <HomeModel>[].obs;
   RxList<HomeModel> get homes => _homes;
 
@@ -22,65 +30,82 @@ class DeviceManager extends GetxService {
     GetStorage().write('selectedHomeIndex', _selectedHomeIndex.value);
   }
 
-  @override
-  void onInit() {
-    //TESTING DATA
-    _homes.add(
-      HomeModel(
-        id: 1,
-        name: 'Home 1'.obs,
-        rooms: [
-          RoomModel(
-              id: 1,
-              name: 'Room 1'.obs,
-              devices: [
-                ElectronicDevice(id: 1, name: 'Device 1'.obs, state: false.obs),
-                ElectronicDevice(id: 2, name: 'Device 2'.obs, state: false.obs),
-              ].obs),
-          RoomModel(
-              id: 2,
-              name: 'Room 2'.obs,
-              devices: [
-                ElectronicDevice(id: 1, name: 'Device 1'.obs, state: false.obs),
-                ElectronicDevice(id: 2, name: 'Device 2'.obs, state: false.obs),
-              ].obs),
-        ].obs,
-      ),
-    );
-    _homes.add(
-      HomeModel(
-        id: 2,
-        name: 'Home 2'.obs,
-        rooms: [
-          RoomModel(
-              id: 1,
-              name: 'Room 1'.obs,
-              devices: [
-                ElectronicDevice(id: 1, name: 'Device 1'.obs, state: false.obs),
-                ElectronicDevice(id: 2, name: 'Device 2'.obs, state: false.obs),
-              ].obs),
-          RoomModel(
-              id: 2,
-              name: 'Room 2'.obs,
-              devices: [
-                ElectronicDevice(id: 1, name: 'Device 1'.obs, state: false.obs),
-                ElectronicDevice(id: 2, name: 'Device 2'.obs, state: false.obs),
-              ].obs),
-        ].obs,
-      ),
-    );
-    _selectedHomeIndex.value = _homes.isEmpty ? null : 0;
+  void init() {
+    final UserModel? user = Get.find<AuthProvider>().getCurrentUser();
+    if (user != null) {
+      _database.setPersistenceEnabled(true);
+      _database.setPersistenceCacheSizeBytes(10000000);
+      _databaseReference = _database.ref("users/${user.uuid}/SMART_IOT");
+      _databaseReference!.onValue.listen((event) {
+        final DataSnapshot snapshot = event.snapshot;
+        print(snapshot.value);
+        //print result {Home 1: {bed room: [{state: 0}, {state: 0}, {state: 0}, {state: 0}]}}
+        //add snapshot.value to homes
+        _homes.clear();
+        Map<dynamic, dynamic> homes = snapshot.value as Map<dynamic, dynamic>;
+        homes.forEach((key, value) {
+          final HomeModel home = HomeModel(
+            name: key.toString(),
+            rooms: <RoomModel>[].obs,
+          );
+          Map<dynamic, dynamic> rooms = value as Map<dynamic, dynamic>;
+          rooms.forEach((key, value) {
+            final RoomModel room = RoomModel(
+              name: key.toString(),
+              devices: <ElectronicDevice>[].obs,
+            );
+            if (value is Map<dynamic, dynamic>) {
+              Map<dynamic, dynamic> devices = value;
+              devices.forEach((key, value) {
+                room.devices.add(
+                  ElectronicDevice.fromJson(
+                    value as Map<String, dynamic>,
+                    key.toString(),
+                  ),
+                );
+              });
+            } else if (value is List<dynamic>) {
+              List<dynamic> devices = value;
+              devices.asMap().forEach((index, value) {
+                if (value != null) {
+                  room.devices.add(
+                    ElectronicDevice.fromJson(
+                      value as Map<dynamic, dynamic>,
+                      index.toString(),
+                    ),
+                  );
+                }
+              });
+            }
+            home.rooms.add(room);
+          });
+          _homes.add(home);
+        });
+        final int? selectedHomeIndex = GetStorage().read('selectedHomeIndex');
+        if (selectedHomeIndex != null && _homes.isNotEmpty) {
+          if (selectedHomeIndex < _homes.length && selectedHomeIndex >= 0) {
+            selectHome(_homes[selectedHomeIndex]);
+          } else {
+            selectHome(_homes[0]);
+          }
+        }
+      });
+    }
   }
 
   Future<void> createHome(String name) async {
-    final int id = _homes.length + 1;
     _homes.add(
       HomeModel(
-        id: id,
-        name: name.obs,
+        name: name,
         rooms: <RoomModel>[].obs,
       ),
     );
     AppToast.showSuccess('Home created successfully');
+  }
+
+  void updateDeviceState(ElectronicDevice device, String roomName) {
+    _databaseReference!
+        .child('${selectedHome.value!.name}/$roomName/${device.id}')
+        .update(device.toJson());
   }
 }

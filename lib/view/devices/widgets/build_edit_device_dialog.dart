@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:home_automation/domain/model/room_model.dart';
+import 'package:home_automation/view/home/home_screen_controller.dart';
 
 import '../../../domain/model/electronic_device.dart';
 
-Future<dynamic> buildDialogBox(BuildContext context, ElectronicDevice device) {
+Future<dynamic> buildDialogBox(
+    BuildContext context, ElectronicDevice device, RoomModel room) {
   TextEditingController nameController = TextEditingController();
   nameController.text = device.name.value;
   DeviceType selectedType = device.type;
@@ -123,6 +127,7 @@ Future<dynamic> buildDialogBox(BuildContext context, ElectronicDevice device) {
                   device.name.value = nameController.text;
                   device.type = selectedType;
                   nameController.clear();
+                  Get.find<HomeScreenController>().updateDevice(device, room);
                   Navigator.of(context).pop();
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(

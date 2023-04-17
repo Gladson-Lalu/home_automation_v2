@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:home_automation/domain/repository/device_manager.dart';
 import '../../domain/model/room_model.dart';
 import '../home/home_screen_controller.dart';
 
@@ -63,13 +64,12 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Obx(
-                      () => Text(rooms[roomIndex].name.value,
-                          style: TextStyle(
-                              color:
-                                  Theme.of(context).textTheme.bodyLarge!.color,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600)),
+                    child: Text(
+                      rooms[roomIndex].name,
+                      style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                   ListView.builder(
@@ -142,13 +142,20 @@ class _DevicesScreenState extends State<DevicesScreen> {
                                                 .withOpacity(0.8),
                                         size: 30),
                                     onPressed: () {
-                                      device.state.value = !device.state.value;
+                                      Get.find<HomeScreenController>()
+                                          .updateDevice(
+                                        device.copyWith(
+                                          state: RxBool(!device.state.value),
+                                        ),
+                                        rooms[roomIndex],
+                                      );
                                     },
                                   ),
                                   //edit button
                                   IconButton(
                                     onPressed: () {
-                                      buildDialogBox(context, device);
+                                      buildDialogBox(
+                                          context, device, rooms[roomIndex]);
                                     },
                                     icon: Icon(Icons.edit,
                                         color: Theme.of(context).focusColor,

@@ -76,26 +76,16 @@ Map<DeviceType, String> IconMap = {
 };
 
 class ElectronicDevice {
-  final int id;
   final RxString name;
+  final String id;
   DeviceType type;
-  int get typeValue {
-    _ensureStableEnumValues();
-    return type.index;
-  }
-
-  set typeValue(int value) {
-    _ensureStableEnumValues();
-    type = DeviceType.values[value];
-  }
-
   final RxBool state;
 
   ElectronicDevice({
     required this.id,
-    this.type = DeviceType.unknown,
     required this.name,
     required this.state,
+    required this.type,
   }) {
     _ensureStableEnumValues();
   }
@@ -139,10 +129,37 @@ class ElectronicDevice {
   //toJson
   toJson() {
     return {
-      'id': id,
       'name': name.value,
-      'type': typeValue,
-      'state': state.value,
+      'type': type.toString().split('.').last,
+      'state': state.value ? 1 : 0,
     };
+  }
+
+  //fromJson
+  factory ElectronicDevice.fromJson(Map<dynamic, dynamic> json, String id) {
+    return ElectronicDevice(
+      id: id,
+      name: RxString(json['name'] ?? "Unknown"),
+      type: json['type'] != null
+          ? DeviceType.values
+              .firstWhere((e) => e.toString().split('.').last == json['type'])
+          : DeviceType.unknown,
+      state: json['state'] == 1 ? true.obs : false.obs,
+    );
+  }
+
+  //copyWith
+  ElectronicDevice copyWith({
+    String? id,
+    RxString? name,
+    DeviceType? type,
+    RxBool? state,
+  }) {
+    return ElectronicDevice(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      state: state ?? this.state,
+    );
   }
 }

@@ -22,7 +22,8 @@ class WeatherController extends GetxController {
 
   @override
   void onInit() {
-    homeId = Get.find<HomeScreenController>().selectedHome.value!.id.toString();
+    homeId =
+        Get.find<HomeScreenController>().selectedHome.value!.name.toString();
     super.onInit();
     _getWeather();
   }

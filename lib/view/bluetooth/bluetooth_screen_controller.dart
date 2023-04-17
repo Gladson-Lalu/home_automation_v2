@@ -107,8 +107,7 @@ class BluetoothScreenController extends GetxController {
     try {
       _getStorage.write('wifiSSID', wifiSSIDController.text);
       _getStorage.write('wifiPassword', wifiPasswordController.text);
-      final String home =
-          Get.find<DeviceManager>().selectedHome.value!.name.value;
+      final String home = Get.find<DeviceManager>().selectedHome.value!.name;
       final email = Get.find<AppController>().currentUser!.email;
       final password = Get.find<AppController>().currentUser!.password;
       final String message =

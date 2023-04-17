@@ -40,7 +40,7 @@ class HomeCard extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              home.name.value,
+              home.name,
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
