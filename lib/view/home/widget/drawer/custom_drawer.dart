@@ -80,7 +80,10 @@ class CustomDrawer extends StatelessWidget {
                 const SizedBox(height: 20),
                 DashboardListTile(
                   title: 'Schedule',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Get.toNamed('/schedule');
+                  },
                 ),
                 const SizedBox(height: 20),
                 DashboardListTile(

@@ -59,6 +59,7 @@ class BluetoothDeviceConfiguration extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return 'Please enter wifi ssid';
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(
@@ -105,6 +106,7 @@ class BluetoothDeviceConfiguration extends StatelessWidget {
                     if (value.length < 8) {
                       return 'Password must be at least 8 characters';
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(
@@ -147,6 +149,7 @@ class BluetoothDeviceConfiguration extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return 'Please enter room name';
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(

@@ -1,16 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'view/schedule/schedule_screen.dart';
 import 'domain/provider/bluetooth_serial_service.dart';
 import 'domain/provider/location_provider.dart';
 import 'domain/repository/device_manager.dart';
 import 'view/auth_wrapper/auth_wrapper.dart';
 import 'view/devices/devices_screen.dart';
 import 'view/home/home_screen.dart';
-import 'view/home/home_screen_controller.dart';
 import 'view/splash/splash_screen.dart';
 
 import 'app/theme.dart';
@@ -48,7 +47,8 @@ class MyApp extends StatelessWidget {
           '/auth': (context) => const AuthWrapper(),
           '/home': (context) => HomeScreen(),
           '/homeSelection': (context) => HomeSelectionScreen(),
-          '/devices': (context) => const DevicesScreen()
+          '/devices': (context) => const DevicesScreen(),
+          '/schedule': (context) => const ScheduleScreen()
         },
       ),
     );

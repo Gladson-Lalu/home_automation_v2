@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:get/get.dart';
+import 'package:home_automation/domain/model/schedule_model.dart';
 
 enum DeviceType {
   table_lamp,
@@ -80,6 +81,7 @@ class ElectronicDevice {
   final String id;
   DeviceType type;
   final RxBool state;
+  final RxList<ScheduleModel> schedules = <ScheduleModel>[].obs;
 
   ElectronicDevice({
     required this.id,
@@ -132,6 +134,7 @@ class ElectronicDevice {
       'name': name.value,
       'type': type.toString().split('.').last,
       'state': state.value ? 1 : 0,
+      'schedules': schedules.map((e) => e.toJson()).toList(),
     };
   }
 
@@ -145,7 +148,13 @@ class ElectronicDevice {
               .firstWhere((e) => e.toString().split('.').last == json['type'])
           : DeviceType.unknown,
       state: json['state'] == 1 ? true.obs : false.obs,
-    );
+    )..schedules.addAll(
+        (json['schedules'] != null)
+            ? (json['schedules'] as List)
+                .map((e) => ScheduleModel.fromJson(e))
+                .toList()
+            : [],
+      );
   }
 
   //copyWith

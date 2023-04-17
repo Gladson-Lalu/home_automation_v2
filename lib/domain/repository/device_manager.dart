@@ -1,12 +1,9 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:home_automation/domain/model/electronic_device.dart';
-import 'package:home_automation/domain/model/user_model.dart';
-import 'package:home_automation/domain/provider/auth_provider.dart';
+import '../model/electronic_device.dart';
+import '../model/user_model.dart';
+import '../provider/auth_provider.dart';
 import '../model/room_model.dart';
 
 import '../../app/app_toast.dart';
@@ -38,9 +35,6 @@ class DeviceManager extends GetxService {
       _databaseReference = _database.ref("users/${user.uuid}/SMART_IOT");
       _databaseReference!.onValue.listen((event) {
         final DataSnapshot snapshot = event.snapshot;
-        print(snapshot.value);
-        //print result {Home 1: {bed room: [{state: 0}, {state: 0}, {state: 0}, {state: 0}]}}
-        //add snapshot.value to homes
         _homes.clear();
         Map<dynamic, dynamic> homes = snapshot.value as Map<dynamic, dynamic>;
         homes.forEach((key, value) {

@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:home_automation/domain/model/electronic_device.dart';
+import '../../domain/model/electronic_device.dart';
 import '../../domain/model/room_model.dart';
 import '../../domain/repository/device_manager.dart';
 
@@ -16,11 +15,6 @@ class HomeScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // final int? selectedHomeIndex = GetStorage().read('selectedHomeIndex');
-    // if (selectedHomeIndex != null) {
-    //   _homeRepository.selectHome(homes[selectedHomeIndex]);
-    // }
-    print('onReady');
     Get.find<DeviceManager>().init();
   }
 

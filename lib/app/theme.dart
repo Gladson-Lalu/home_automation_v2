@@ -20,6 +20,16 @@ class AppTheme {
     ),
     colorScheme: const ColorScheme.dark(secondary: lightSecondaryColor)
         .copyWith(background: lightScaffoldBG),
+    timePickerTheme: const TimePickerThemeData(
+      dialHandColor: lightPrimaryColor,
+      dialBackgroundColor: lightContainerBG,
+      entryModeIconColor: lightPrimaryColor,
+      hourMinuteTextColor: lightPrimaryColor,
+      dayPeriodTextColor: lightPrimaryColor,
+      dayPeriodShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+    ),
   );
 
   //dark theme
@@ -39,5 +49,15 @@ class AppTheme {
     ),
     colorScheme: const ColorScheme.dark(secondary: darkSecondaryBG)
         .copyWith(background: darkScaffoldBG),
+    timePickerTheme: TimePickerThemeData(
+      dialHandColor: darkPrimaryColor,
+      dialBackgroundColor: darkContainerBG,
+      entryModeIconColor: darkPrimaryColor,
+      hourMinuteTextColor: darkPrimaryColor,
+      dayPeriodTextColor: darkPrimaryColor,
+      dayPeriodShape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+    ),
   );
 }

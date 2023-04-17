@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../home/home_screen_controller.dart';
 
+import '../home/home_screen_controller.dart';
 import 'widgets/create_home_card.dart';
 import 'widgets/home_card.dart';
 

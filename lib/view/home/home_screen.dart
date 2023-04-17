@@ -1,10 +1,10 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:home_automation/domain/model/room_model.dart';
-import 'package:home_automation/view/devices/widgets/show_add_room_dialog.dart';
-import 'package:home_automation/view/home/widget/drawer/custom_drawer.dart';
-import 'package:home_automation/view/home_selection/home_selection_screen.dart';
+import '../../domain/model/room_model.dart';
+import '../devices/widgets/show_add_room_dialog.dart';
+import 'widget/drawer/custom_drawer.dart';
+import '../home_selection/home_selection_screen.dart';
 
 import '../../domain/model/electronic_device.dart';
 import 'home_screen_controller.dart';

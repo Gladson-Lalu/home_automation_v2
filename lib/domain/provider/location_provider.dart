@@ -48,8 +48,8 @@ class LocationProvider {
 
   //get the city name using geocoding
   Future<String> _getCityName(double latitude, double longitude) async {
-    List<geo.Placemark> placemarks =
+    List<geo.Placemark> placemark =
         await geo.placemarkFromCoordinates(latitude, longitude);
-    return placemarks[0].locality!;
+    return placemark[0].locality!;
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import '../../app/app_toast.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -99,8 +98,7 @@ class BluetoothSerialService {
 
   void writeData(String data) {
     if (_connection != null && _connection!.isConnected) {
-
       _connection!.output.add(utf8.encoder.convert(data));
-          }
+    }
   }
 }

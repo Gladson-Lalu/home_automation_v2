@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:home_automation/domain/repository/device_manager.dart';
 import '../../domain/model/room_model.dart';
 import '../home/home_screen_controller.dart';
 

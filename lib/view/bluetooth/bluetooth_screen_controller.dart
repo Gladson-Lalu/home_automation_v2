@@ -67,7 +67,12 @@ class BluetoothScreenController extends GetxController {
     });
 
     _readDataSubscription = _bluetoothSerialService.readData.listen((data) {
-      AppToast.show(data);
+      if (data == 'completed') {
+        AppToast.show('Credentials sent successfully');
+        Get.back();
+      } else if (data == 'error') {
+        AppToast.showError('Error sending credentials');
+      }
     });
 
     state.bindStream(_bluetoothSerialService.state);
